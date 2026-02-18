@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ app_name }}</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>{{ app_name }}</h1>
+    <p>Generate videos from prompts using Sora / Veo3 / Kling aliases or any model slug.</p>
+
+    <form id="generate-form">
+      <label>Prompt<textarea id="prompt" required minlength="3" placeholder="A cinematic drone shot over neon Tokyo at dawn"></textarea></label>
+      <div class="row">
+        <label>Provider
+          <select id="provider">
+            {% for provider in providers %}
+              <option value="{{ provider }}" {% if provider == default_provider %}selected{% endif %}>{{ provider }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>Model
+          <input id="model" value="kling" placeholder="kling | veo3 | sora | model/slug" />
+        </label>
+      </div>
+      <div class="row">
+        <label>Aspect Ratio
+          <select id="aspect_ratio">
+            <option>16:9</option><option>9:16</option><option>1:1</option>
+          </select>
+        </label>
+        <label>Duration (seconds)
+          <input id="duration" type="number" value="5" min="3" max="10" />
+        </label>
+      </div>
+      <label>Negative Prompt (optional)
+        <input id="negative_prompt" placeholder="blurry, low quality" />
+      </label>
+      <button type="submit">Generate Video</button>
+    </form>
+
+    <section id="result" class="hidden">
+      <h2>Result</h2>
+      <p id="status"></p>
+      <video id="video" controls class="hidden"></video>
+      <p id="error" class="error"></p>
+    </section>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>
